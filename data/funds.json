@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Manulife Dana Kas II",
+    "manager": "MAMI",
+    "minInvestment": 100000
+  },
+  {
+    "name": "Manulife Dana Saham Kelas A",
+    "manager": "MAMI",
+    "minInvestment": 100000
+  },
+  {
+    "name": "Manulife Syariah Sektoral Amanah Kelas A,",
+    "manager": "MAMI",
+    "minInvestment": 10000
+  },
+  {
+    "name": "Bond Index Fund",
+    "manager": "TWC",
+    "minInvestment": 10000
+  },
+  {
+    "name": "Makana Prima",
+    "manager": "TWC",
+    "minInvestment": 100000
+  }
+]
