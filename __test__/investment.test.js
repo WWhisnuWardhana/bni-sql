@@ -6,8 +6,8 @@ const ramdomNum = require("../helpers/randomizer");
 const { hashPassword } = require("../helpers/bcrypt");
 
 const payload = {
-  userId: 1,
-  username: "wahyu",
+  userId: 2,
+  username: "whisnu",
 };
 access_token = createToken(payload);
 

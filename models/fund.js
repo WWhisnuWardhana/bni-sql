@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: { msg: "Mutual Fund already exist!" },
         validate: {
           notNull: {
             msg: "Fund Name can't be null!",

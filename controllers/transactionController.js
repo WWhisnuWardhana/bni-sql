@@ -4,18 +4,8 @@ const { User, Fund, Transaction, Investment } = require("../models/index");
 class transactionController {
   static async transactionList(req, res, next) {
     try {
-      const { username } = req.loginInfo;
-      let transactions = await Transaction.findAll(
-        {
-          include: {
-            model: User,
-            attributes: ["id", "username"],
-            where: { username },
-          },
-        },
-
-        { order: [["id", "ASC"]] }
-      );
+      const { userId } = req.loginInfo;
+      let transactions = await Transaction.findAll({ where: { userId } });
       transactions.length === 0
         ? res.status(200).json({ message: "No transactions has been made" })
         : res.status(200).json({ transactions });
@@ -30,6 +20,7 @@ class transactionController {
       const { userId } = req.loginInfo;
       const fund = await Fund.findByPk(fundId);
       const user = await User.findByPk(userId);
+      user.balance = Number(user.balance);
       if (!fund) {
         throw { name: "InvalidFund" };
       }

@@ -102,7 +102,6 @@ describe("POST /register", () => {
       let response = await request(app).post("/register").send(body);
       expect(response.status).toBe(201);
       expect(response.body).toBeInstanceOf(Object);
-      expect(response.body).toHaveProperty("newUser", expect.any(Object));
     });
   });
 

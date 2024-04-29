@@ -10,6 +10,7 @@ router.post("/register", userController.register);
 router.post("/login", userController.login);
 
 router.use(authentication);
+router.get("/profile", userController.profile);
 router.patch("/topup", userController.topup);
 router.use("/funds", fundRouter);
 router.use("/transactions", transactionRouter);

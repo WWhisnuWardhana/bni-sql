@@ -2,6 +2,7 @@ const { User, Fund } = require("../models/index");
 const { validatePassword } = require("../helpers/bcrypt");
 const { createToken } = require("../helpers/jwt");
 const ramdomNum = require("../helpers/randomizer");
+const currencyFormat = require("../helpers/currency");
 
 class userController {
   static async register(req, res, next) {
@@ -12,7 +13,11 @@ class userController {
         password,
       });
 
-      res.status(201).json({ newUser });
+      const user = await User.findByPk(newUser.id, {
+        attributes: { exclude: ["password", "balance"] },
+      });
+
+      res.status(201).json({ message: `Register success!`, user });
     } catch (error) {
       console.log(error);
       next(error);
@@ -42,14 +47,16 @@ class userController {
           };
           const access_token = createToken(payload);
           const funds = await Fund.findAll();
-          const NAVDate = funds[0].NAVDate;
           const today = new Date();
 
           // For Testing
           // today.setDate(today.getDate() + 1);
 
-          if (NAVDate.toLocaleDateString() !== today.toLocaleDateString()) {
-            for (let el of funds) {
+          for (let el of funds) {
+            if (
+              !el.NAVDate ||
+              el.NAVDate.toLocaleDateString() !== today.toLocaleDateString()
+            ) {
               await Fund.update(
                 {
                   NAVDate: today,
@@ -82,7 +89,25 @@ class userController {
         throw { name: "InvalidAmount" };
       }
       await user.increment("balance", { by: amount });
-      res.status(200).json({ message: "Topup success" });
+      res
+        .status(200)
+        .json({ message: `Top Up ${currencyFormat(amount)} success!` });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async profile(req, res, next) {
+    try {
+      const { userId } = req.loginInfo;
+      const user = await User.findByPk(userId, {
+        attributes: { exclude: ["password"] },
+      });
+      if (!user) {
+        throw { name: "UserNotFound" };
+      }
+      res.status(200).json({ user: user });
     } catch (error) {
       console.log(error);
       next(error);

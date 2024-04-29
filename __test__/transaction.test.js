@@ -33,13 +33,18 @@ beforeAll(async () => {
 describe("post /transactions/buy", () => {
   describe("post /transactions/buy - succeed", () => {
     it("buy, should create new transaction and success message", async () => {
+      let user = await request(app)
+        .get("/profile")
+        .set("Authorization", `Bearer ${access_token}`);
+      console.log(user, "<<<<<<< ini user");
+
       let fund = await request(app)
         .get("/funds")
         .set("Authorization", `Bearer ${access_token}`);
 
       let fundId = fund.body.funds[0].id;
       const body = {
-        fundId,
+        fundId: fundId,
         amount: 100000,
       };
       let response = await request(app)
